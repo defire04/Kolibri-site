@@ -47,6 +47,7 @@ class Product(models.Model):
 
 
 class Loader(Product):
+
     сarrying = models.CharField(max_length=255, verbose_name='Вантажопідйомність, кг')
     mast_lifting_height = models.CharField(max_length=255, verbose_name='Висота підйому мачти, мм')
     length_of_forks = models.CharField(max_length=255, verbose_name='Довжина вил, мм')
@@ -59,6 +60,7 @@ class Loader(Product):
 
 
 class ElectricCarts(Product):
+
     сarrying = models.CharField(max_length=255, verbose_name='Вантажопідйомність, кг')
     mast_lifting_height = models.CharField(max_length=255, verbose_name='Висота підйому, мм')
     length_of_forks = models.CharField(max_length=255, verbose_name='Довжина вил, мм')
