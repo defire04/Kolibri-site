@@ -133,7 +133,7 @@ class ElectricCarts(Product):
     # length_of_forks = models.CharField(max_length=255, verbose_name='Довжина вил, мм')
 
     сarrying = models.CharField(max_length=255, verbose_name='Вантажопідйомність, кг')
-    #sbattery = models.CharField(max_length=255, verbose_name='Характеристики акамулятора ')
+    # battery = models.CharField(max_length=255, verbose_name='Характеристики акамулятора ')
     weight = models.CharField(max_length=255, verbose_name='Власна масса, кг')
     turning_radius = models.CharField(max_length=255, verbose_name='Радіус повороту, мм')
 
