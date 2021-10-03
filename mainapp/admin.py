@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import *
 
 
-class LoaderAdminForm(ModelForm):
+class ProductForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -14,28 +14,28 @@ class LoaderAdminForm(ModelForm):
 
 
 
-    def clean_image(self):
-        image = self.cleaned_data['image']
-        img = Image.open(image)
-        min_height, min_width = Product.MIN_RESOLUTION
-        max_height, max_width = Product.MAX_RESOLUTION
-
-        # Для контроля размера  и разрешения фотографий
-        if  image.size > Product.MAX_IMAGE_SIZE:
-            raise ValidationError('Размер изображения не должен превышать 3МБ!')
-
-        if img.height < min_height or img.width < min_width:
-           raise ValidationError('Разрешение изображение меньше минимального разрешения!')
-        if img.height > max_height or img.width > max_width:
-           raise ValidationError('Разрешение изображение больше максимального разрешения!')  
-
-        #print(img.width, img.height)
-        return image
+    # def clean_image(self):
+    #     image = self.cleaned_data['image']
+    #     img = Image.open(image)
+    #     min_height, min_width = Product.MIN_RESOLUTION
+    #     max_height, max_width = Product.MAX_RESOLUTION
+    #
+    #     # Для контроля размера  и разрешения фотографий
+    #     if  image.size > Product.MAX_IMAGE_SIZE:
+    #         raise ValidationError('Размер изображения не должен превышать 3МБ!')
+    #
+    #     if img.height < min_height or img.width < min_width:
+    #        raise ValidationError('Разрешение изображение меньше минимального разрешения!')
+    #     if img.height > max_height or img.width > max_width:
+    #        raise ValidationError('Разрешение изображение больше максимального разрешения!')
+    #
+    #     #print(img.width, img.height)
+    #     return image
 
 
 class LoaderAdmin(admin.ModelAdmin):
 
-    form = LoaderAdminForm
+    form = ProductForm
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'category':
@@ -44,6 +44,8 @@ class LoaderAdmin(admin.ModelAdmin):
 
 
 class ElectricCartsAdmin(admin.ModelAdmin):
+
+    form = ProductForm
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'category':

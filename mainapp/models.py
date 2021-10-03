@@ -1,13 +1,27 @@
 import sys
-from io import BytesIO
 from PIL import Image
+from io import BytesIO
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.urls import  reverse
 
 User = get_user_model()
+
+def get_product_url(obj, viewname):
+    ct_model = obj.__class__._meta.model_name
+    return reverse(viewname, kwargs={'ct_model': ct_model, 'slug': obj.slug})
+
+
+
+class MinResolutionErrorException(Exception):
+    pass
+
+
+class MaxResolutionErrorException(Exception):
+    pass
 
 # 1 Product
 # 2 Category
@@ -53,7 +67,7 @@ class Category(models.Model):
 class Product(models.Model):
 
     MIN_RESOLUTION = (300, 300)
-    MAX_RESOLUTION = (800, 800)
+    MAX_RESOLUTION = (450, 300)
     MAX_IMAGE_SIZE = 3145728
 
     class Meta:
@@ -64,34 +78,35 @@ class Product(models.Model):
     slug = models.SlugField(unique=True)
     image = models.ImageField(verbose_name='Изображение')
     descripytion = models.TextField(verbose_name='Описание', null=True)
-    price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Цена')
+    # price = models.DecimalField(max_digits=9, decimal_places=2, verbose_name='Цена')
 
     def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
-        '''
-        image = self.image
-        img = Image.open(image)
-        min_height, min_width = self.MIN_RESOLUTION
-        max_height, max_width = self.MAX_RESOLUTION
 
-          # Для контроля размера фотографий
-        if img.height < min_height or img.width < min_width:
-           raise MinResolutionErrorException('Разрешение изображение меньше минимального разрешения!')
-        if img.height > max_height or img.width > max_width:
-           raise MaxResolutionErrorException('Разрешение изображение больше максимального разрешения!')
+        # image = self.image
+        # img = Image.open(image)
+        # min_height, min_width = self.MIN_RESOLUTION
+        # max_height, max_width = self.MAX_RESOLUTION
+        #
+        #   # Для контроля размера фотографий
+        # if img.height < min_height or img.width < min_width:
+        #    raise MinResolutionErrorException('Разрешение изображение меньше минимального разрешения!')
+        # if img.height > max_height or img.width > max_width:
+        #    raise MaxResolutionErrorException('Разрешение изображение больше максимального разрешения!')
+        #
+        # print(img.width, img.height)
 
-        #print(img.width, img.height)
-        '''
         image = self.image
         img = Image.open(image)
         new_img = img.convert('RGB')
-        resized_new_img = new_img.resize((200, 200), Image.ANTIALIAS)
+        resized_new_img = new_img.resize((450, 300), Image.ANTIALIAS)
         filestream = BytesIO()
         resized_new_img.save(filestream, 'JPEG', quality=90)
         filestream.seek(0)
         name ='{}.{}'.format(*self.image.name.split('.'))
+        # print(self.image.name)
         self.image = InMemoryUploadedFile(filestream, 'ImageField', name, 'jpeg/image', sys.getsizeof(filestream), None)
         super().save(*args, **kwargs)
 
@@ -107,15 +122,26 @@ class Loader(Product):
     def __str__(self):
      return "{} : {}".format(self.category.name, self.title)
 
+    def get_absplute_url(self):
+        return get_product_url(self, 'product_detail')
+
 
 class ElectricCarts(Product):
 
+    # сarrying = models.CharField(max_length=255, verbose_name='Вантажопідйомність, кг')
+    # mast_lifting_height = models.CharField(max_length=255, verbose_name='Висота підйому, мм')
+    # length_of_forks = models.CharField(max_length=255, verbose_name='Довжина вил, мм')
+
     сarrying = models.CharField(max_length=255, verbose_name='Вантажопідйомність, кг')
-    mast_lifting_height = models.CharField(max_length=255, verbose_name='Висота підйому, мм')
-    length_of_forks = models.CharField(max_length=255, verbose_name='Довжина вил, мм')
+    #sbattery = models.CharField(max_length=255, verbose_name='Характеристики акамулятора ')
+    weight = models.CharField(max_length=255, verbose_name='Власна масса, кг')
+    turning_radius = models.CharField(max_length=255, verbose_name='Радіус повороту, мм')
 
     def __del__(self):
         return "{} : {}".format(self.category.name, self.title)
+
+    def get_absplute_url(self):
+        return get_product_url(self, 'product_detail')
 
 
 class CartProduct(models.Model):
@@ -154,7 +180,7 @@ class Customer(models.Model):
         return "Покупатель: {} {}".format(self.user.first_name, self.user.last_name)
 
 
-#class Specification(models.Model):
+# class Specification(models.Model):
 #
 #    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
 #    object_id = models.PositiveIntegerField()
