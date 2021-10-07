@@ -11,17 +11,23 @@
   </ol>
 </nav>
 
+
+
 <div class="row">
     <div class="col-md-4">
-        <img src="{{product.image.url}}" class="img-fluid">
+        <img src="{{product.image.url}}" class="img-fluid" style="margin-left: 500px">
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 " style="margin-left: 300px">
         <h3> {{ product.title}}</h3>
         <p>Цена: Договорная </p>
         <p>Описание: {{product.descripytion}} </p>
-        <p>Характеристики: </p>
-
     </div>
+    <p class="mt-4" style="margin-left: 510px">Характеристики: </p>
+    {% if product.category.slug == 'loader' %}
+        {% include 'loader_specification.html'%}
+    {% else %}
+        {% include 'electric_carts_specification.html'%}
+    {% endif %}
 </div>
 
 

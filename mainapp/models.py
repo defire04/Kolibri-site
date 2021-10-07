@@ -115,7 +115,7 @@ class Loader(Product):
     сarrying = models.CharField(max_length=255, verbose_name='Вантажопідйомність, кг')
     mast_lifting_height = models.CharField(max_length=255, verbose_name='Висота підйому мачти, мм')
     length_of_forks = models.CharField(max_length=255, verbose_name='Довжина вил, мм')
-    engine_type = models.CharField(max_length=255, verbose_name='Тип двигателя')
+    engine_type = models.CharField(max_length=255, verbose_name='Тип двигуна')
     state = models.CharField(max_length=255, verbose_name='Стан')
     weight = models.CharField(max_length=255, verbose_name='Вага')
 
@@ -128,12 +128,11 @@ class Loader(Product):
 
 class ElectricCarts(Product):
 
-    # сarrying = models.CharField(max_length=255, verbose_name='Вантажопідйомність, кг')
-    # mast_lifting_height = models.CharField(max_length=255, verbose_name='Висота підйому, мм')
-    # length_of_forks = models.CharField(max_length=255, verbose_name='Довжина вил, мм')
 
     сarrying = models.CharField(max_length=255, verbose_name='Вантажопідйомність, кг')
     # battery = models.CharField(max_length=255, verbose_name='Характеристики акамулятора ')
+    # state = models.CharField(max_length=255, verbose_name='Стан')
+    # удалить базу и раскомментировать!!!!!!
     weight = models.CharField(max_length=255, verbose_name='Власна масса, кг')
     turning_radius = models.CharField(max_length=255, verbose_name='Радіус повороту, мм')
 
