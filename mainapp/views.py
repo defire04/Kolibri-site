@@ -10,7 +10,7 @@ class ProductDetailViev(DetailView):
 
     CT_MODEL_MODEL_CLASS = {
         'loader': Loader,
-        'electric_carts' : ElectricCarts,
+        'electric_carts': ElectricCarts,
     }
 
     def dispatch(self, request, *args, **kwargs):

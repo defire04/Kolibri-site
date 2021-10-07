@@ -128,11 +128,9 @@ class Loader(Product):
 
 class ElectricCarts(Product):
 
-
     сarrying = models.CharField(max_length=255, verbose_name='Вантажопідйомність, кг')
-    # battery = models.CharField(max_length=255, verbose_name='Характеристики акамулятора ')
-    # state = models.CharField(max_length=255, verbose_name='Стан')
-    # удалить базу и раскомментировать!!!!!!
+    battery = models.CharField(max_length=255, verbose_name='Характеристики акамулятора ')
+    state = models.CharField(max_length=255, verbose_name='Стан')
     weight = models.CharField(max_length=255, verbose_name='Власна масса, кг')
     turning_radius = models.CharField(max_length=255, verbose_name='Радіус повороту, мм')
 
